@@ -2,7 +2,6 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-
 # pin definitions
 easy   = 4
 medium = 5
@@ -90,31 +89,31 @@ def col1(channel):
 	print ("Player chooses column 1")
 
 def col2(channel):
-	# call drop on column1
+	# call drop on column2
 	print ("Player chooses column 2")
 
 def col3(channel):
-	# call drop on column1
+	# call drop on column3
 	print ("Player chooses column 3")
 
 def col4(channel):
-	# call drop on column1
+	# call drop on column4
 	print ("Player chooses column 4")
 
 def col5(channel):
-	# call drop on column1
+	# call drop on column5
 	print ("Player chooses column 5")
 
 def col6(channel):
-	# call drop on column1
+	# call drop on column6
 	print ("Player chooses column 6")
 
 def col7(channel):
-	# call drop on column1
+	# call drop on column7
 	print ("Player chooses column 7")
 	
 #####################################################################
-
+	
 # interrupt setup
 
 GPIO.add_event_detect(ai_diff, GPIO.RISING,
