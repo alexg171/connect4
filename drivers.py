@@ -7,27 +7,28 @@ GPIO.setwarnings(False)
 easy   = 4
 medium = 5
 hard   = 6
-ai_diff = 7
-startbtn = 8
-resetbtn = 9
-col1btn  = 10
-col2btn  = 11
-col3btn  = 12
-col4btn  = 13
-col5btn  = 14
-col6btn  = 15
+ai_diff = 14
+startbtn = 15
+resetbtn = 18
+col1btn  = 23
+col2btn  = 24
+col3btn  = 25
+col4btn  = 8
+col5btn  = 7
+col6btn  = 12
 col7btn  = 16
 
 colLed = 17 #multiple leds to one pin
 
 # pin setup
+#pull down resistor buttons must be connected to voltage and chosen pin
 GPIO.setup(ai_diff, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(startbtn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(resetbtn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(col1btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(col2btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(col3btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-GPIO.setup(col5btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+GPIO.setup(col4btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(col5btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(col6btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(col7btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
@@ -42,7 +43,7 @@ ai_diff_btnst = 1
 GPIO.output(easy, 1)
 
 def aiDifficulty(channel):
-        global ai_diff_btnSt
+        global ai_diff_btnst
         if (ai_diff_btnst ==1):   #from easy to medium
             ai_diff_btnst += 1
             GPIO.output(medium,1)
@@ -56,13 +57,14 @@ def aiDifficulty(channel):
             ## call hard ai difficulty option
             
         else:                   #from hard to easy
-	    ai_diff_btnst = 1
-            GPIO.output(easy,1)
-            GPIO.output(hard,0)
+                ai_diff_btnst = 1
+                GPIO.output(easy,1)
+                GPIO.output(hard,0)
             ## call easy ai difficulty option
             
         print ("AI difficult button State:", ai_diff_btnst )
-
+                                        
+        
 ### start ###########################################################
 # Calls start state when button is pressed
 # startbtn = pin number
@@ -77,7 +79,7 @@ def start(channel):
 # startbtn = pin number
 #GPIO.output(resetbtn, 1)
 
-def resest(channel):
+def reset(channel):
 	# call reset state
 	print ("Reset state called")
 	
@@ -148,3 +150,4 @@ GPIO.add_event_detect(col7btn, GPIO.RISING,
         
 while(1):
     x = 5
+    
