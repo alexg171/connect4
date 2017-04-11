@@ -1,0 +1,29 @@
+class Piece:
+    Player1 = 1
+    Player2 = 2
+    Empty = 3
+
+class Board:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.data = [[Piece.Empty for x in range(width)] for x in range(height)]
+
+    def drop(self, x, value):
+        drop_col = self.getDropY(x)
+        self.set(x,drop_col, value)
+
+    def getDropY(self, x):
+        for i in range(self.height):
+            if self.data[x][i] == Piece.Empty:
+                return i
+
+    def set(self, x, y, value):
+        self.data[x][y] = value
+
+    def get(self, x, y):
+        return self.data[x][y]
+
+
+
+
