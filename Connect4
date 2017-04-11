@@ -3,6 +3,7 @@ class Piece:
     Player2 = 2
     Empty = 3
 
+connect = 4
 class Board:
     def __init__(self, width, height):
         self.width = width
@@ -14,7 +15,7 @@ class Board:
         self.set(x,drop_col, value)
 
     def getDropY(self, x):
-        for i in range(self.height):
+        for i in reversed(range(self.height)):
             if self.data[x][i] == Piece.Empty:
                 return i
 
@@ -24,6 +25,75 @@ class Board:
     def get(self, x, y):
         return self.data[x][y]
 
+    def print(self):
+        for j in range(self.height):
+            for i in range(self.width):
+                print(self.data[i][j], " ", end='')
+            print(end="\n")
 
+    def checkEnd(self):
+        count = 0;
+        for i in range(self.width):
+            for j in range(self.height):
+                #diag right
+                for k in range(connect-1):
+                    if i+k+1 > self.width-1 or j+k+1 > self.height-1:
+                        break
+                    if self.data[i+k][j+k] == self.data[i+k+1][j+k+1] and self.data[i][j] != 3:
+                        count= count+1
+                        if count == connect-1:
+                            return True
+                    else:
+                        break
+                count = 0
+                #diag left
+                for k in range(connect-1):
+                    if i-k-1 < 0 or j-k-1 < 0:
+                        break
+                    if self.data[i-k][j-k] == self.data[i-k-1][j-k-1] and self.data[i][j] != 3:
+                        count= count+1
+                        if count == connect-1:
+                            return True
+                    else:
+                        break
+                count = 0
+                #horiz
+                for k in range(connect-1):
+                    if i+k+1 > self.width-1:
+                        break
+                    if self.data[i+k][j] == self.data[i+k+1][j] and self.data[i][j] != 3:
+                        count= count+1
+                        if count == connect-1:
+                            return True
+                    else:
+                        break
+                count = 0
+                #vert
+                for k in range(connect-1):
+                    if j+k+1 > self.height-1:
+                        break
+                    if self.data[i][j+k] == self.data[i][j+k+1] and self.data[i][j] != 3:
+                        count= count+1
+                        if count == connect-1:
+                            return True
+                    else:
+                        break
+                count = 0
+        return False;
 
+def main():
+    example = Board(5,5)
+    example.drop(0,1)
+    example.drop(1,2)
+    #example.drop(0,1)
+    example.drop(0,1)
+    example.drop(0,1)
+    example.drop(1,2)
+    example.drop(1,1)
+    example.drop(2,2)
+    #example.drop(2,1)
+    example.drop(3,1)
+    example.print();
+    print(example.checkEnd());
 
+if __name__ == "__main__": main()
