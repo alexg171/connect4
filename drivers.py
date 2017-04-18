@@ -3,9 +3,13 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 # pin definitions
+#output pins
 easy   = 4
 medium = 5
 hard   = 6
+colLed = 17 #multiple leds to one pin
+
+#input pins
 ai_diff = 14
 startbtn = 15
 resetbtn = 18
@@ -16,8 +20,6 @@ col4btn  = 8
 col5btn  = 7
 col6btn  = 12
 col7btn  = 16
-
-colLed = 17 #multiple leds to one pin
 
 # pin setup
 #pull down resistor buttons must be connected to voltage and chosen pin

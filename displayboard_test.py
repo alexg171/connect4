@@ -7,8 +7,17 @@ lcd = Adafruit_CharLCD()
 
 lcd.begin(16, 1)
 
+message_top = 'default'
+message_btm = 'default'
+
+def lcd_message(msg_t, msg_b):
+    global message_top
+    global message_bottom
+    message_top = msg_t
+    message_btm = msg_b
+
 while 1:
     lcd.clear()
-    lcd.message('Hello, world!\n')
-    lcd.message('Hola, mundo!\n')
+    lcd.message(message_top)
+    lcd.message(message_btm)
     sleep(2)

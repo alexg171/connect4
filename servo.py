@@ -1,9 +1,17 @@
 import RPi.GPIO as GPIO
 import time
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(18, GPIO.OUT)
 
-p = GPIO.PWM(18, 100)
-p.start(5)
-p.ChangeDutyCycle(100)
-GPIO.cleanup()
+pin = 25
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pin, GPIO.OUT)
+pwm = GPIO.PWM(25,50)
+
+def drop_chip():    
+    pwm.start(10)
+    time.sleep(1)
+    pwm.ChangeDutyCycle(5)
+    time.sleep(0.15)
+    pwm.ChangeDutyCycle(10)
+    GPIO.cleanup()
+
+drop_chip()
