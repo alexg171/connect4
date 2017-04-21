@@ -1,28 +1,28 @@
+from DecisionTree import DecisionNode,DecisionTree
+
 class Piece:
     Player1 = 1
     Player2 = 2
     Empty = 3
 
 
-connect = 4
-
 
 class Board:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.data = [[Piece.Empty for x in range(width)] for x in range(height)]
+        self.data = [[Piece.Empty for x in range(height)] for y in range(width)]
         self.fullColumns = []
 
     def drop(self, x, value):
         if (x in self.fullColumns):
             print("Column full")
         else:
-            drop_col = self.getDropY(x)
-            self.set(x, drop_col, value)
+            drop_row = self.getDropY(x)
+            self.set(x, drop_row, value)
     def getColumns(self):
         return self.width
-    def getFullColums(self):
+    def getFullColumns(self):
         return self.fullColumns
     def getDropY(self, x):
         for i in reversed(range(self.height)):
@@ -38,12 +38,72 @@ class Board:
         return self.data[x][y]
 
     def print(self):
-        for j in range(self.height):
-            for i in range(self.width):
-                print(self.data[i][j], " ", end='')
-            print(end="\n")
+        for i in range(self.height):
+            for j in range(self.width):
+                print(self.data[j][i], "", end="")
+            print("")
 
-    def checkEnd(self):
+    def countNumInRow(self, connect, player):
+        count = 0
+        numinrow = 0
+        for i in range(self.width):
+            for j in range(self.height):
+                # diag right
+                for k in range(connect - 1):
+                    if i + k + 1 > self.width - 1 or j + k + 1 > self.height - 1:
+                        break
+                    if self.data[i + k][j + k] == self.data[i + k + 1][j + k + 1] and self.data[i][j] != 3:
+                        count = count + 1
+                        if count == connect - 1:
+                            if (self.data[i][j] == player):
+                                numinrow=numinrow+1
+                    else:
+                        break
+                count = 0
+                # diag left
+                for k in range(connect - 1):
+                    if i - k - 1 < 0 or j - k - 1 < 0:
+                        break
+                    if self.data[i - k][j - k] == self.data[i - k - 1][j - k - 1] and self.data[i][j] != 3:
+                        count = count + 1
+                        if count == connect - 1:
+                            if (self.data[i][j] == player):
+                                numinrow=numinrow+1
+                    else:
+                        break
+                count = 0
+                # horiz
+                for k in range(connect - 1):
+                    if i + k + 1 > self.width - 1:
+                        break
+                    if self.data[i + k][j] == self.data[i + k + 1][j] and self.data[i][j] != 3:
+                        count = count + 1
+                        if count == connect - 1:
+                            if (self.data[i][j] == player):
+                                numinrow=numinrow+1
+                    else:
+                        break
+                count = 0
+                # vert
+                for k in range(connect - 1):
+                    if j + k + 1 > self.height - 1:
+                        break
+                    if self.data[i][j + k] == self.data[i][j + k + 1] and self.data[i][j] != 3:
+                        count = count + 1
+                        if count == connect - 1:
+                            if (self.data[i][j] == player):
+                                numinrow=numinrow+1
+                    else:
+                        break
+                count = 0
+        return numinrow
+    def isEqual(self, board):
+        for i in range(self.width):
+            for j in range(self.height):
+                if(self.data[i][j] != board.data[i][j]):
+                    return False
+        return True
+    def checkEnd(self, connect):
         count = 0;
         for i in range(self.width):
             for j in range(self.height):
@@ -106,44 +166,8 @@ class Board:
         return -1;
 
 
-class DecisionNode:
-    def __init__(self, board, children, move):
-        self.children = []
-        self.board = board
-        self.value = 0
-        self.aimove = move
-
-    def addChild(self, node):
-        self.children.append(node)
-
-    def getValue(self):
-        if self.board.checkEnd() == 2:
-            return 100
-
-    def getChildren(self):
-        return self.children
-
-
-class DecisionTree:
-    def __init__(self, currentBoard):
-        self.root = DecisionNode(currentBoard, [], -1)
-        self.levelcount = 0
-
-    def generateTree(self, node, levels):
-        print("level",self.levelcount)
-        self.levelcount = self.levelcount + 1
-        if(self.levelcount < levels):
-            for i in range(node.board.getColumns()):
-                if i not in node.board.getFullColums():
-                    newboard = node.board
-                    newboard.drop(i, 2)
-                    print("\n\n")
-                    newboard.print()
-                    child = DecisionNode(newboard, [], i)
-                    node.children.append(child)
-
 def main():
-    example = Board(5, 5)
+    example = Board(7, 6)
     example.drop(0, 1)
     example.drop(1, 2)
     # example.drop(0,1)
@@ -156,11 +180,14 @@ def main():
     # example.drop(2,1)
     example.drop(3, 1)
     example.print();
-    print(example.checkEnd());
 
-    tree = DecisionTree(example)
-    node = tree.root
-    tree.generateTree(node, 3)
+    print("---------------")
+    tree = DecisionTree(DecisionNode(-1, example))
+    tree.generateTree(tree.getRoot(),7,1)
+    tree.getBestMove(tree.getRoot(),7, 1, [])
+    print("Best move:", tree.movewhere)
+    #print("num of 3 rows:", example.countNumInRow(3,1))
+
 
 
 if __name__ == "__main__": main()
